@@ -15,15 +15,15 @@ volumes: - ./wp_content:/var/www/html/wp-content
 environment:
   WORDPRESS_DB_HOST: db:3306
   WORDPRESS_DB_USER: root
-  WORDPRESS_DB_PASSWORD: "030118040"
+  WORDPRESS_DB_PASSWORD: "030118040" //İşlem 2
   WORDPRESS_DB_NAME: wordpress
   
   ngnix:
     image: ngnix
     restart: always
     ports:
-    - "80:80"
-    - "443:443"
+    - "80:80" //İşlem 3
+    - "443:443" /İşlem 4
 volumes:
 - ./nginx.conf:/etc/ngnix/nginx.conf: ro
 - ./certs:/etc/letsencrypt: ro
