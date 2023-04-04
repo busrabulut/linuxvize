@@ -25,7 +25,7 @@ environment:
     restart: always
     ports:
     - "80:80" //İşlem 3
-    - "443:443" /İşlem 4
+    - "443:443" //İşlem 4
 volumes:
 - ./nginx.conf:/etc/ngnix/nginx.conf: ro
 - ./certs:/etc/letsencrypt: ro
@@ -45,6 +45,6 @@ certbot:
     - nginx
     command: certoonly -webroot --webroot-path=/var/www/html/wp-content --email youremail@mail.com --agree-tos --no-eff-email --staging force-renwal -d domain.com
     ports:
-    - "443:443"
+    - "443:443" //İşlem 4
 
   
