@@ -1,1 +1,48 @@
+services:
+  db:
+  image: mariadb
+  restart: always
+  environment:
+  MYSQL_ROOT_PASSWORD: "030118040"
 
+wordpress:
+  depends_on:
+- db
+image: wordpress:fpm-alpine
+restrart: always
+volumes: - ./wp_content:/var/www/html/wp-content
+
+environment:
+  WORDPRESS_DB_HOST: db:3306
+  WORDPRESS_DB_USER: root
+  WORDPRESS_DB_PASSWORD: "030118040"
+  WORDPRESS_DB_NAME: wordpress
+  
+  ngnix:
+    image: ngnix
+    restart: always
+    ports:
+    - "80:80"
+    - "443:443"
+volumes:
+- ./nginx.conf:/etc/ngnix/nginx.conf: ro
+- ./certs:/etc/letsencrypt: ro
+- ./wp-content:/var/www/html/wp-content
+depends_on:
+- wordpress
+hostname:busrabulut
+
+certbot:
+  image: certbot/certbot
+  restart: always
+  volumes:
+  - ./certs:/etc/letsencrypt
+  - ./wp-content: /var/www/html/wp-content
+  
+  depends_on:
+    - nginx
+    command: certoonly -webroot --webroot-path=/var/www/html/wp-content --email youremail@mail.com --agree-tos --no-eff-email --staging force-renwal -d domain.com
+    ports:
+    - "443:443"
+
+  
